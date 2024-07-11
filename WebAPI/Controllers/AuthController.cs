@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
             _authService = authService;
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<ActionResult> Register(UserForRegisterRequest userForRegisterDto)
         {
             
@@ -32,7 +32,7 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ActionResult> Login(UserForLoginRequest userForLoginDto)
         {
             var userToLogin = await _authService.Login(userForLoginDto);
@@ -48,6 +48,7 @@ namespace WebAPI.Controllers
             }
 
             return BadRequest(result.Message);
+
         }
     }
 }

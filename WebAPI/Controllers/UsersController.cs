@@ -10,7 +10,6 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         IUserService _userService;
@@ -48,11 +47,5 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("getById")]
-        public async Task<IActionResult> GetById([FromQuery] int id)
-        {
-            var result = await _userService.GetById(id);
-            return Ok(result);
-        }
     }
 }
