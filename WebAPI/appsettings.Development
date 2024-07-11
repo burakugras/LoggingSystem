@@ -1,0 +1,10 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "LogDBContext": "Server=(localdb)\\MSSQLLocalDB;Database=LogDbContext;integrated security=true;Trusted_Connection=True;TrustServerCertificate=True"
+  }
