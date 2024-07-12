@@ -2,6 +2,7 @@
 using Business.Abstracts;
 using Business.Dtos.Requests.UserRequests;
 using Business.Dtos.Responses.UserReponses;
+using Business.Rules;
 using Core.DataAccess.Paging;
 using Core.Entities.Concretes;
 using DataAccess.Abstracts;
@@ -19,11 +20,13 @@ namespace Business.Concretes
     {
         IUserDal _userDal;
         IMapper _mapper;
+        UserBusinessRules _userBusinessRules;
 
-        public UserManager(IUserDal userDal, IMapper mapper)
+        public UserManager(IUserDal userDal, IMapper mapper, UserBusinessRules userBusinessRules)
         {
             _mapper = mapper;
             _userDal = userDal;
+            _userBusinessRules = userBusinessRules;
         }
 
         public void Add(UserBase user)
@@ -43,6 +46,7 @@ namespace Business.Concretes
 
         public async Task<User> DeleteAsync(int id)
         {
+            await _userBusinessRules.IsExistsUser(id);
             var data = await _userDal.GetAsync(i => i.Id == id);
             var result = await _userDal.DeleteAsync(data);
             return result;
@@ -59,14 +63,7 @@ namespace Business.Concretes
             return result;
 
         }
-
-        public async Task<UserBase> GetByEMail(string email)
-        {
-            var data = await _userDal.GetAsync(u => u.Email == email);
-            UserBase result = _mapper.Map<UserBase>(data);
-            return result;
-        }
-
+        
         public async Task<GetListUserResponse> GetById(int id)
         {
             var data = await _userDal.GetAsync(predicate: c => c.Id == id,
@@ -79,6 +76,7 @@ namespace Business.Concretes
 
         public async Task<UserBase> GetByMail(string email)
         {
+            await _userBusinessRules.IsExistsUserByMail(email);
             var data = await _userDal.GetAsync(u => u.Email == email);
             UserBase result = _mapper.Map<UserBase>(data);
             return result;
@@ -92,6 +90,8 @@ namespace Business.Concretes
 
         public async Task<UpdatedUserResponse> UpdateAsync(UpdateUserRequest updateUserRequest)
         {
+            await _userBusinessRules.IsExistsUser(updateUserRequest.Id);
+
             var data = await _userDal.GetAsync(i => i.Id == updateUserRequest.Id);
             _mapper.Map(updateUserRequest, data);
             data.UpdatedDate = DateTime.Now;

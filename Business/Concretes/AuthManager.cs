@@ -54,6 +54,8 @@ namespace Business.Concretes
         public async Task<IDataResult<UserBase>> Register(UserForRegisterRequest userForRegisterDto, string password)
         {
             await _userBusinessRules.UserShouldNotExistsWithSameEmail(userForRegisterDto.Email);
+            await _userBusinessRules.UserShouldNotExistsWithSameUsername(userForRegisterDto.Username);
+
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
             var user = new UserBase

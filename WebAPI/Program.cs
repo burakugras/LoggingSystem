@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Core.Extensions;
+using Core.CrossCutingConcerns.Exceptions.Extensions;
+using WebAPI.Utilities;
 
 namespace WebAPI;
 
@@ -23,6 +25,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddBusinessServices();
         builder.Services.AddDataAccessServices(builder.Configuration);
+        builder.Services.AddValidationAspect();
 
         var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -78,6 +81,8 @@ public class Program
         }
 
         //middleware kodu buraya eklenecek
+
+        app.ConfigureCustomExceptionMiddleware();//sýraya dikkat et MapControllers'ýn altýnda olabilir
 
         app.UseAuthentication();
         app.UseAuthorization();

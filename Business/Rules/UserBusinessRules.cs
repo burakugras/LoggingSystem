@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business.Rules
 {
-    public class UserBusinessRules:BaseBusinessRules
+    public class UserBusinessRules : BaseBusinessRules
     {
         IUserDal _userDal;
 
@@ -20,11 +20,34 @@ namespace Business.Rules
             _userDal = userDal;
         }
 
-        public async Task UserShouldNotExistsWithSameEmail(String email)
+        public async Task UserShouldNotExistsWithSameEmail(string email)
         {
             User? user = await _userDal.GetAsync(i => i.Email == email);
             if (user != null)
                 throw new BusinessException(BusinessMessages.UserIsAlreadyExist);
+        }
+        public async Task UserShouldNotExistsWithSameUsername(string username)
+        {
+            User? user = await _userDal.GetAsync(i => i.Username == username);
+            if (user != null)
+                throw new BusinessException(BusinessMessages.UserIsAlreadyExist);
+        }
+
+        public async Task IsExistsUser(int id)
+        {
+            User user = await _userDal.GetAsync(u => u.Id == id);
+            if (user == null)
+            {
+                throw new BusinessException(BusinessMessages.UserIsNotExist);
+            }
+        }
+        public async Task IsExistsUserByMail(string email)
+        {
+            User user = await _userDal.GetAsync(u => u.Email == email);
+            if (user == null)
+            {
+                throw new BusinessException(BusinessMessages.UserIsNotExist);
+            }
         }
     }
 }

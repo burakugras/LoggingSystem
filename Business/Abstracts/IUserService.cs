@@ -21,6 +21,5 @@ namespace Business.Abstracts
         List<OperationClaim> GetClaims(UserBase user);
         Task<UserBase> GetByMail(string email);
         void Add(UserBase user);
-        Task<UserBase> GetByEMail(string email);
     }
 }

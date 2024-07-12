@@ -12,5 +12,6 @@ namespace Business.Messages
         internal static string EmailOrPasswordIsWrong = "E-Posta veya Şifre Hatalı!";
         internal static string OkayMessage = "Okay";
         internal static string CreatedMessage = "Oluşturuldu";
+        internal static string UserIsNotExist = "Böyle bir kullanıcı mevcut değil";
     }
 }
