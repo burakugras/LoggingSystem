@@ -16,7 +16,7 @@ namespace DataAccess.Contexts
         protected IConfiguration Configuration { get; set; }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Activity> Activitys { get; set; }
+        public DbSet<Activity> Activities { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
 
