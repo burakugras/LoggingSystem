@@ -11,6 +11,9 @@ namespace Business.Dtos.Responses.UserReponses
     {
         public string Username { get; set; }
         public string Email { get; set; }
-        public List<Activity> Activities{ get; set; }
+        //public Activity Activity{ get; set; }
+        public string ActivityType { get; set; }
+        public DateTime Date { get; set; }
+        public string Description { get; set; }
     }
 }

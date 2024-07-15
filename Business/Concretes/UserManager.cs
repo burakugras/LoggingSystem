@@ -10,17 +10,15 @@ using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Business.Concretes
 {
     public class UserManager : IUserService
     {
-        IUserDal _userDal;
-        IMapper _mapper;
-        UserBusinessRules _userBusinessRules;
+        private readonly IUserDal _userDal;
+        private readonly IMapper _mapper;
+        private readonly UserBusinessRules _userBusinessRules;
 
         public UserManager(IUserDal userDal, IMapper mapper, UserBusinessRules userBusinessRules)
         {
@@ -31,17 +29,18 @@ namespace Business.Concretes
 
         public void Add(UserBase user)
         {
-            User userBase = _mapper.Map<User>(user);
-            userBase.CreatedDate = DateTime.Now;
-            _userDal.Add(userBase);
+            User userEntity = _mapper.Map<User>(user);
+            userEntity.CreatedDate = DateTime.Now;
+            _userDal.Add(userEntity);
         }
 
         public async Task<UserBase> AddAsync(UserBase user)
         {
-            User userBase = _mapper.Map<User>(user);
-            User createdUser = await _userDal.AddAsync(userBase);
+            User userEntity = _mapper.Map<User>(user);
+            userEntity.CreatedDate = DateTime.Now;
+            User createdUser = await _userDal.AddAsync(userEntity);
             CreatedUserResponse createdUserResponse = _mapper.Map<CreatedUserResponse>(createdUser);
-            return user;
+            return _mapper.Map<UserBase>(createdUserResponse);
         }
 
         public async Task<User> DeleteAsync(int id)
@@ -54,21 +53,21 @@ namespace Business.Concretes
 
         public async Task<IPaginate<GetListUserResponse>> GetAllAsync(PageRequest pageRequest)
         {
-            var data = await _userDal.GetListAsync(include: p => p
-            .Include(p => p.Activities),
-            index: pageRequest.PageIndex,
-            size: pageRequest.PageSize);
+            var data = await _userDal.GetListAsync(
+                include: p => p.Include(p => p.Activities),
+
+                index: pageRequest.PageIndex,
+                size: pageRequest.PageSize);
 
             var result = _mapper.Map<Paginate<GetListUserResponse>>(data);
             return result;
-
         }
-        
+
         public async Task<GetListUserResponse> GetById(int id)
         {
-            var data = await _userDal.GetAsync(predicate: c => c.Id == id,
-            include: p => p.
-            Include(p => p.Activities));
+            var data = await _userDal.GetAsync(
+                predicate: c => c.Id == id,
+                include: p => p.Include(p => p.Activities));
 
             var result = _mapper.Map<GetListUserResponse>(data);
             return result;
@@ -84,8 +83,8 @@ namespace Business.Concretes
 
         public List<OperationClaim> GetClaims(UserBase user)
         {
-            User userBase = _mapper.Map<User>(user);
-            return _userDal.GetClaims(userBase);
+            User userEntity = _mapper.Map<User>(user);
+            return _userDal.GetClaims(userEntity);
         }
 
         public async Task<UpdatedUserResponse> UpdateAsync(UpdateUserRequest updateUserRequest)

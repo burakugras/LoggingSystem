@@ -18,7 +18,9 @@ namespace Business.Profiles
             CreateMap<CreateActivityRequest, ActivityProfile>();
             CreateMap<Activity, CreatedActivityResponse>();
 
-            CreateMap<Activity, GetListActivityResponse>();
+            CreateMap<Activity, GetListActivityResponse>().ForMember(destinationMember: response => response.Username,
+                memberOptions: opt => opt.MapFrom(au => au.User.Username));
+                
             CreateMap<Paginate<Activity>, Paginate<GetListActivityResponse>>();
 
             CreateMap<UpdateActivityRequest, Activity>().ForMember(dest => dest.CreatedDate, opt => opt.Ignore());

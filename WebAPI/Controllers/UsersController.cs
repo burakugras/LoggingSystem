@@ -5,11 +5,13 @@ using Core.Entities.Concretes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[ServiceFilter(typeof(LoggingFilter))]
     public class UsersController : Controller
     {
         IUserService _userService;

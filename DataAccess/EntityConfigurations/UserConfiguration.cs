@@ -21,8 +21,8 @@ namespace DataAccess.EntityConfigurations
             builder.Property(b => b.PasswordSalt).HasColumnName("PasswordSalt");
 
             builder.HasMany(b => b.Activities)
-                .WithOne(usm => usm.User)
-                .HasForeignKey(usm => usm.UserId);
+                .WithOne(b => b.User)
+                .HasForeignKey(i => i.UserId);
 
             builder.HasQueryFilter(b => !b.DeletedDate.HasValue);
         }

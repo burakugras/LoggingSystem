@@ -8,7 +8,6 @@ namespace Entities.Concretes
         public string Email { get; set; }
         public byte[] PasswordSalt { get; set; }
         public byte[] PasswordHash { get; set; }
-        public List<Activity> Activities { get; set; }
-
+        public ICollection<Activity> Activities { get; set; } = new List<Activity>();
     }
 }

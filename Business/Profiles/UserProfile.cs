@@ -19,13 +19,18 @@ namespace Business.Profiles
         {
             CreateMap<UserForLoginRequest, User>();
             CreateMap<User, CreatedUserResponse>();
+                        CreateMap<CreatedUserResponse, UserBase>();
             CreateMap<UserBase, User>();
             CreateMap<User, UserBase>();
 
-            CreateMap<Activity, GetListActivityResponse>();
-
             CreateMap<User, GetListUserResponse>()
-            .ForMember(dest=>dest.Activities, opt=>opt.MapFrom(src=>src.Activities));
+                .ForMember(destinationMember: response => response.ActivityType, memberOptions:
+                opt => opt.MapFrom(acs => acs.Activities))
+                .ForMember(destinationMember: response => response.Date, memberOptions:
+                opt => opt.MapFrom(acs => acs.Activities))
+                .ForMember(destinationMember: response => response.Description, memberOptions:
+                opt => opt.MapFrom(acs => acs.Activities))
+                .ReverseMap();
 
             CreateMap<Paginate<User>, Paginate<GetListUserResponse>>();
 

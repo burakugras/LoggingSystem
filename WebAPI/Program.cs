@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Core.Extensions;
 using Core.CrossCutingConcerns.Exceptions.Extensions;
 using WebAPI.Utilities;
+using WebAPI.Filters;
 
 namespace WebAPI;
 
@@ -20,7 +21,14 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddScoped<ActivityLoggerService>();
+        builder.Services.AddScoped<LoggingFilter>();
+
         // Add services to the container.
+        builder.Services.AddControllersWithViews(options =>
+        {
+            options.Filters.Add<LoggingFilter>(); // Add the logging filter globally
+        });
 
         builder.Services.AddControllers();
         builder.Services.AddBusinessServices();
