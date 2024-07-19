@@ -20,8 +20,9 @@ namespace Business.Profiles
             CreateMap<UserForLoginRequest, User>();
             CreateMap<User, CreatedUserResponse>();
             CreateMap<CreatedUserResponse, UserBase>();
-            CreateMap<UserBase, User>();
-            CreateMap<User, UserBase>();
+            CreateMap<UserBase, User>().ReverseMap();
+
+            CreateMap<User, DeletedUserResponse>().ReverseMap();
 
             CreateMap<User, GetListUserResponse>().ReverseMap();
 

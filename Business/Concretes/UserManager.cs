@@ -35,13 +35,12 @@ namespace Business.Concretes
             _userDal.Add(userEntity);
         }
 
-        public async Task<UserBase> AddAsync(UserBase user)
+        public async Task<CreatedUserResponse> AddAsync(UserBase user)
         {
             User userEntity = _mapper.Map<User>(user);
-            userEntity.CreatedDate = DateTime.Now;
             User createdUser = await _userDal.AddAsync(userEntity);
             CreatedUserResponse createdUserResponse = _mapper.Map<CreatedUserResponse>(createdUser);
-            return _mapper.Map<UserBase>(createdUserResponse);
+            return createdUserResponse;
         }
 
         public async Task<DeletedUserResponse> DeleteAsync(int id)
