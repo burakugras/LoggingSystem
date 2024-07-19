@@ -5,6 +5,7 @@ using Business.Dtos.Responses.UserReponses;
 using Business.Rules;
 using Core.DataAccess.Paging;
 using Core.Entities.Concretes;
+using Core.Utilities.Results;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
@@ -43,12 +44,13 @@ namespace Business.Concretes
             return _mapper.Map<UserBase>(createdUserResponse);
         }
 
-        public async Task<User> DeleteAsync(int id)
+        public async Task<DeletedUserResponse> DeleteAsync(int id)
         {
             await _userBusinessRules.IsExistsUser(id);
-            var data = await _userDal.GetAsync(i => i.Id == id);
-            var result = await _userDal.DeleteAsync(data);
-            return result;
+            var user = await _userDal.GetAsync(i => i.Id == id);
+            var deletedUser = await _userDal.DeleteAsync(user);
+            DeletedUserResponse responseUser=_mapper.Map<DeletedUserResponse>(deletedUser);
+            return responseUser;
         }
 
         public async Task<IPaginate<GetListUserResponse>> GetAllAsync(PageRequest pageRequest)

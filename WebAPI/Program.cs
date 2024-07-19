@@ -12,6 +12,7 @@ using Core.Extensions;
 using Core.CrossCutingConcerns.Exceptions.Extensions;
 using WebAPI.Utilities;
 using WebAPI.Filters;
+using Autofac.Core;
 
 namespace WebAPI;
 
@@ -28,6 +29,11 @@ public class Program
         builder.Services.AddControllersWithViews(options =>
         {
             options.Filters.Add<LoggingFilter>(); // Add the logging filter globally
+        });
+
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
         });
 
         builder.Services.AddControllers();
@@ -50,6 +56,7 @@ public class Program
                                 IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                             };
                         });
+
 
         builder.Services.AddSwaggerGen(opt =>
         {

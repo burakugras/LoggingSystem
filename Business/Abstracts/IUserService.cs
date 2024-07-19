@@ -2,6 +2,7 @@
 using Business.Dtos.Responses.UserReponses;
 using Core.DataAccess.Paging;
 using Core.Entities.Concretes;
+using Core.Utilities.Results;
 using Entities.Concretes;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Business.Abstracts
     {
         Task<UserBase> AddAsync(UserBase user);
         Task<UpdatedUserResponse> UpdateAsync(UpdateUserRequest updateUserRequest);
-        Task<User> DeleteAsync(int id);
+        Task<DeletedUserResponse> DeleteAsync(int id);
         Task<IPaginate<GetListUserResponse>> GetAllAsync(PageRequest pageRequest);
         Task<GetListUserResponse> GetById(int id);
         List<OperationClaim> GetClaims(UserBase user);
@@ -23,3 +24,4 @@ namespace Business.Abstracts
         void Add(UserBase user);
     }
 }
+    
