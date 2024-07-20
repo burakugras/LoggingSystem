@@ -31,10 +31,10 @@ public class Program
             options.Filters.Add<LoggingFilter>(); // Add the logging filter globally
         });
 
-        builder.Services.AddControllers().AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-        });
+        //builder.Services.AddControllers().AddJsonOptions(options =>
+        //{
+        //    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        //});
 
         builder.Services.AddControllers();
         builder.Services.AddBusinessServices();
