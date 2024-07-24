@@ -45,12 +45,13 @@ namespace WebAPI.Controllers
                 return BadRequest(userToLogin.Message);
             }
 
-            var user = await _userDal.GetAsync(u => u.Id == userToLogin.Data.Id);
+            //var user = await _userDal.GetAsync(u => u.Id == userToLogin.Data.Id);
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
+
             if (result.Success)
             {
-                await _activityLogger.LogActivity(user.Id, "Login", "Kullanıcı başarıyla giriş yaptı.");
+                //await _activityLogger.LogActivity(user.Id, "Login", "Kullanıcı başarıyla giriş yaptı.");
                 return Ok(result.Data);
             }
 
