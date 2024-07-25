@@ -3,6 +3,8 @@ using Business.Abstracts;
 using Business.Dtos.Requests.UserRequests;
 using Business.Dtos.Responses.UserReponses;
 using Business.Rules;
+using Core.Aspects.LogAspects;
+using Core.CrossCutingConcerns.Logging.Log4Net.Loggers;
 using Core.DataAccess.Paging;
 using Core.Entities.Concretes;
 using Core.Utilities.Results;
@@ -52,6 +54,7 @@ namespace Business.Concretes
             return responseUser;
         }
 
+        [LogAspect(typeof(DatabaseLogger))]
         public async Task<IPaginate<GetListUserResponse>> GetAllAsync(PageRequest pageRequest)
         {
             var data = await _userDal.GetListAsync(
