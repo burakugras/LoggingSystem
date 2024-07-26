@@ -5,7 +5,6 @@ using Core.Entities.Concretes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {

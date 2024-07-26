@@ -3,7 +3,6 @@ using Business.Dtos.Requests.UserRequests;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
@@ -13,13 +12,11 @@ namespace WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private IAuthService _authService;
-        private readonly ActivityLoggerService _activityLogger;
         private IUserDal _userDal;
 
-        public AuthController(IAuthService authService, ActivityLoggerService activityLogger, IUserDal userDal)
+        public AuthController(IAuthService authService,  IUserDal userDal)
         {
             _authService = authService;
-            _activityLogger = activityLogger;
             _userDal = userDal;
         }
 
@@ -45,13 +42,11 @@ namespace WebAPI.Controllers
                 return BadRequest(userToLogin.Message);
             }
 
-            //var user = await _userDal.GetAsync(u => u.Id == userToLogin.Data.Id);
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
 
             if (result.Success)
             {
-                //await _activityLogger.LogActivity(user.Id, "Login", "Kullanıcı başarıyla giriş yaptı.");
                 return Ok(result.Data);
             }
 

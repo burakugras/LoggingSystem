@@ -11,7 +11,6 @@ using Microsoft.OpenApi.Models;
 using Core.Extensions;
 using Core.CrossCutingConcerns.Exceptions.Extensions;
 using WebAPI.Utilities;
-using WebAPI.Filters;
 using Autofac.Core;
 
 namespace WebAPI;
@@ -21,20 +20,13 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
-        builder.Services.AddScoped<ActivityLoggerService>();
-        builder.Services.AddScoped<LoggingFilter>();
-
+        
         // Add services to the container.
         builder.Services.AddControllersWithViews(options =>
         {
-            options.Filters.Add<LoggingFilter>(); // Add the logging filter globally
+            
         });
-
-        //builder.Services.AddControllers().AddJsonOptions(options =>
-        //{
-        //    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-        //});
+                
 
         builder.Services.AddControllers();
         builder.Services.AddBusinessServices();
