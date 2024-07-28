@@ -1,7 +1,10 @@
-﻿using Core.Utilities.IoC;
+﻿using Core.CrossCutingConcerns.Logging.SeriLog.Logger;
+using Core.Utilities.IoC;
 using Core.Utilities.Security.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using PostSharp.Extensibility;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,8 +20,12 @@ namespace Core.DependencyResolvers
         {
             serviceCollection.AddMemoryCache();
             serviceCollection.AddScoped<ITokenHelper, JwtHelper>();
-            serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            serviceCollection.AddTransient<MsSqlLogger>();
+            serviceCollection.AddTransient<FileLogger>();
+            serviceCollection.AddSingleton(Log.Logger);
+
             serviceCollection.AddSingleton<Stopwatch>();
+            serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
     }
 }

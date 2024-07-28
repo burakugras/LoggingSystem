@@ -1,5 +1,7 @@
 ﻿using Business.Abstracts;
 using Business.Dtos.Requests.UserRequests;
+using Core.CrossCutingConcerns.Logging.SeriLog.Logger;
+using Core.CrossCutingConcerns.Logging;
 using Core.DataAccess.Paging;
 using Core.Entities.Concretes;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +21,8 @@ namespace WebAPI.Controllers
             _userService=userService;
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] UserBase user)
         {
@@ -26,6 +30,8 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
         {
@@ -33,7 +39,8 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateUserRequest updateUserRequest)
         {
@@ -41,6 +48,8 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete([FromBody] int id)
         {

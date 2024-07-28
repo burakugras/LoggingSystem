@@ -1,5 +1,7 @@
 ﻿using Business.Abstracts;
 using Business.Dtos.Requests.UserRequests;
+using Core.CrossCutingConcerns.Logging.SeriLog.Logger;
+using Core.CrossCutingConcerns.Logging;
 using DataAccess.Abstracts;
 using Entities.Concretes;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +22,8 @@ namespace WebAPI.Controllers
             _userDal = userDal;
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpPost("Register")]
         public async Task<ActionResult> Register(UserForRegisterRequest userForRegisterDto)
         {
@@ -33,6 +37,8 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpPost("Login")]
         public async Task<ActionResult> Login(UserForLoginRequest userForLoginDto)
         {
