@@ -56,13 +56,13 @@ namespace Core.Utilities.Security.Jwt
 
         private IEnumerable<Claim> SetClaims(UserBase user, List<OperationClaim> operationClaims)
         {
-            var claims = new List<Claim>();
-
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email)); // Standart claim türü kullanımı
-            claims.Add(new Claim(ClaimTypes.Name, $"{user.Username}"));
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username), // Kullanıcı adını ekliyoruz
+                new Claim(ClaimTypes.Name, user.Username), // Standart Name claim'i de ekleniyor
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            };
             claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
-
             return claims;
         }
     }

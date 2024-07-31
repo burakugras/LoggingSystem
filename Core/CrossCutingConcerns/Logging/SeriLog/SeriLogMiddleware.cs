@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Serilog.Context;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -46,7 +47,10 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog
 
             if (user.Identity.IsAuthenticated)
             {
-                username = user.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Email)?.Value ?? "Unknown";
+                // Kullanıcı adı bilgisi (username) ClaimTypes.Name veya JwtRegisteredClaimNames.Sub claim'lerinden alınabilir
+                username = user.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Name)?.Value ??
+                           user.Claims.FirstOrDefault(i => i.Type == JwtRegisteredClaimNames.Sub)?.Value ??
+                           "Unknown";
             }
 
             var logParameters = new List<LogParameter>();
