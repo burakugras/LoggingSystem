@@ -42,7 +42,13 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog
         {
             var MethodName = context.Request.Path;
             var user = context.User;
-            var username = user.Identity.IsAuthenticated ? user.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Email)?.Value : "Unauthorized";
+            var username = "Unauthorized";
+
+            if (user.Identity.IsAuthenticated)
+            {
+                username = user.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Email)?.Value ?? "Unknown";
+            }
+
             var logParameters = new List<LogParameter>();
 
             var queryStringParams = context.Request.Query;
@@ -62,6 +68,7 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog
                 Parameters = logParameters,
                 Username = username
             };
+
             LogContext.PushProperty("Username", username);
             LogContext.PushProperty("MethodName", MethodName);
 

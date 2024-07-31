@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Security.Jwt
 {
-    public class JwtHelper:ITokenHelper
+    public class JwtHelper : ITokenHelper
     {
         public IConfiguration Configuration { get; }
         private TokenOptions _tokenOptions;
@@ -58,11 +58,10 @@ namespace Core.Utilities.Security.Jwt
         {
             var claims = new List<Claim>();
 
-            claims.Add(new Claim("Id", user.Id.ToString()));
-            claims.Add(new Claim("Email", user.Email));
-            claims.Add(new Claim("Name", $"{user.Username}"));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email)); // Standart claim türü kullanımı
+            claims.Add(new Claim(ClaimTypes.Name, $"{user.Username}"));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
-
 
             return claims;
         }
