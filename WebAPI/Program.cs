@@ -1,4 +1,3 @@
-
 using Business;
 using Core.DependencyResolvers;
 using Core.Utilities.IoC;
@@ -20,13 +19,9 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
         // Add services to the container.
-        builder.Services.AddControllersWithViews(options =>
-        {
-            
-        });
-                
+        builder.Services.AddControllersWithViews();
 
         builder.Services.AddControllers();
         builder.Services.AddBusinessServices();
@@ -59,17 +54,22 @@ public class Program
                 Scheme = "bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description =
-                    "Please enter token"
+                Description = "Please enter token"
             });
             opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-{
-    {
-        new OpenApiSecurityScheme
-            { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } },
-        new string[] { }
-    }
-});
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
+            });
         });
 
         builder.Services.AddDependencyResolvers(new ICoreModule[] { new CoreModule() });
@@ -87,12 +87,11 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        //middleware kodu buraya eklenecek
-
-        app.ConfigureCustomExceptionMiddleware();//sýraya dikkat et MapControllers'ýn altýnda olabilir
-
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.ConfigureCustomExceptionMiddleware();
+
         app.MapControllers();
         app.Run();
     }
