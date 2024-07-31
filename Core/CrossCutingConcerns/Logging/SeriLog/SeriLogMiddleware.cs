@@ -41,16 +41,18 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog
 
         private string GetLogDetail(HttpContext context)
         {
-            var MethodName = context.Request.Path;
+            var methodName = context.Request.Path;
             var user = context.User;
             var username = "Unauthorized";
+            var userId = "Unknown";
 
             if (user.Identity.IsAuthenticated)
             {
-                // Kullanıcı adı bilgisi (username) ClaimTypes.Name veya JwtRegisteredClaimNames.Sub claim'lerinden alınabilir
                 username = user.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Name)?.Value ??
                            user.Claims.FirstOrDefault(i => i.Type == JwtRegisteredClaimNames.Sub)?.Value ??
                            "Unknown";
+
+                userId = user.Claims.FirstOrDefault(i => i.Type == "UserId")?.Value ?? "Unknown";
             }
 
             var logParameters = new List<LogParameter>();
@@ -68,13 +70,15 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog
 
             var logDetail = new LogDetail()
             {
-                MethodName = MethodName,
+                MethodName = methodName,
                 Parameters = logParameters,
-                Username = username
+                Username = username,
+                UserId = userId
             };
 
             LogContext.PushProperty("Username", username);
-            LogContext.PushProperty("MethodName", MethodName);
+            LogContext.PushProperty("UserId", userId);
+            LogContext.PushProperty("MethodName", methodName);
 
             var options = new JsonSerializerOptions
             {

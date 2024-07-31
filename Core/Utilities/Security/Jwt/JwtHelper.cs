@@ -58,9 +58,10 @@ namespace Core.Utilities.Security.Jwt
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Username), // Kullanıcı adını ekliyoruz
-                new Claim(ClaimTypes.Name, user.Username), // Standart Name claim'i de ekleniyor
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.Username), // Kullanıcı adı
+                new Claim(ClaimTypes.Name, user.Username), // Standart Name claim
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // UserId
+                new Claim("UserId", user.Id.ToString()) // Kullanıcı Id'si için özel bir claim
             };
             claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
             return claims;

@@ -26,6 +26,7 @@ public class MsSqlLogger : LoggerServiceBase
             };
 
             var usernameColumnOptions = CustomUsernameColumnOptions.CreateUsernameColumnOptions();
+            var userIdColumnOptions = CustomUserIdColumnOptions.CreateUserIdColumnOptions();
             var methodNameColumnOptions = CustomMethodNameColumnOptions.CreateMethodNameColumnOptions();
 
             var columnOptions = new ColumnOptions
@@ -36,7 +37,10 @@ public class MsSqlLogger : LoggerServiceBase
                 LogEvent = { ColumnName = "LogEvent", DataType = SqlDbType.NVarChar, AllowNull = true, DataLength = 4000 },
                 Message = { ColumnName = "Message", DataType = SqlDbType.NVarChar, AllowNull = true, DataLength = 4000 },
                 Exception = { ColumnName = "Exception", DataType = SqlDbType.NVarChar, AllowNull = true, DataLength = 4000 },
-                AdditionalColumns = usernameColumnOptions.AdditionalColumns.Concat(methodNameColumnOptions.AdditionalColumns).ToList()
+                AdditionalColumns = usernameColumnOptions.AdditionalColumns
+                                     .Concat(userIdColumnOptions.AdditionalColumns)
+                                     .Concat(methodNameColumnOptions.AdditionalColumns)
+                                     .ToList()
             };
 
             columnOptions.Store.Remove(StandardColumn.MessageTemplate);
@@ -48,7 +52,8 @@ public class MsSqlLogger : LoggerServiceBase
                     columnOptions: columnOptions)
                     .Enrich.FromLogContext()
                     .Enrich.With<CustomUsernameColumnEvent>()
-                    .Enrich.With<CustomMethodNameColumnEvent>()
+                    .Enrich.With<CustomUserIdColumnEvent>()
+                    .Enrich.With<CustomMethodNameColumnEvent>() // Custom MethodName enricher ekleniyor
                     .MinimumLevel.Information()
                     .CreateLogger();
 
