@@ -1,5 +1,7 @@
 ﻿using Business.Abstracts;
 using Business.Dtos.Requests.ActivityRequests;
+using Core.CrossCutingConcerns.Logging.SeriLog.Logger;
+using Core.CrossCutingConcerns.Logging;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +20,8 @@ namespace WebAPI.Controllers
             _activityService = activityService;
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] CreateActivityRequest createActivityRequest)
         {
@@ -25,6 +29,8 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
         {
@@ -32,6 +38,8 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpPut("Update")]
         public async Task<IActionResult> Update([FromBody] UpdateActivityRequest updateActivityRequest)
         {
@@ -39,6 +47,8 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete([FromBody] int id)
         {
@@ -46,6 +56,8 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Logging(typeof(MsSqlLogger))]
+        [Logging(typeof(FileLogger))]
         [HttpGet("GetById")]
         public async Task<IActionResult> GetById([FromQuery] int id)
         {

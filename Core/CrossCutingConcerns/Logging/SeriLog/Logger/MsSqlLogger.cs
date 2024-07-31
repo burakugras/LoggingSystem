@@ -2,24 +2,20 @@
 using Core.CrossCutingConcerns.Logging.SeriLog.CustomColumnEvents;
 using Core.CrossCutingConcerns.Logging.SeriLog.CustomColumnOptions;
 using Core.CrossCutingConcerns.Logging.SeriLog.Messages;
-using Microsoft.Extensions.Configuration;
-using Serilog;
+using Core.CrossCutingConcerns.Logging;
 using Serilog.Sinks.MSSqlServer;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
-namespace Core.CrossCutingConcerns.Logging.SeriLog.Logger
+public class MsSqlLogger : LoggerServiceBase
 {
-    public class MsSqlLogger : LoggerServiceBase
+    public MsSqlLogger(IConfiguration configuration)
     {
-        public MsSqlLogger(IConfiguration configuration)
+        try
         {
             MsSqlConfiguration logConfiguration =
-                configuration.GetSection("SeriLogConfiguration:MsSqlConfiguration").Get<MsSqlConfiguration>()
+                configuration.GetSection("SeriLogConfigurations:MsSqlConfiguration").Get<MsSqlConfiguration>()
                 ?? throw new Exception(SerilogMessages.NullOptionsMessage);
 
             MSSqlServerSinkOptions sinkOptions = new()
@@ -47,16 +43,22 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog.Logger
 
             Serilog.Core.Logger seriLogConfig = new LoggerConfiguration().WriteTo
                 .MSSqlServer(
-                logConfiguration.ConnectionString,
-                sinkOptions,
-                columnOptions: columnOptions)
-                     .Enrich.FromLogContext()
-                     .Enrich.With<CustomUsernameColumnEvent>()
-                     .Enrich.With<CustomMethodNameColumnEvent>()
-                     .MinimumLevel.Information()
-                .CreateLogger();
+                    logConfiguration.ConnectionString,
+                    sinkOptions,
+                    columnOptions: columnOptions)
+                    .Enrich.FromLogContext()
+                    .Enrich.With<CustomUsernameColumnEvent>()
+                    .Enrich.With<CustomMethodNameColumnEvent>()
+                    .MinimumLevel.Information()
+                    .CreateLogger();
 
             Logger = seriLogConfig;
+        }
+        catch (Exception ex)
+        {
+            // Hata mesajını logla
+            Console.WriteLine($"Error initializing MsSqlLogger: {ex.Message}");
+            throw;
         }
     }
 }
