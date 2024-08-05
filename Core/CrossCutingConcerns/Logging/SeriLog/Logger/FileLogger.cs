@@ -26,7 +26,7 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog.Logger
                 retainedFileCountLimit: 5000000,
                 shared: true,
                 encoding: Encoding.UTF8,
-                outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {Message}{NewLine}{Exception}"
+                outputTemplate: "[{Date:HH:mm:ss}] {Description}{NewLine}{Exception}"
                 ).CreateLogger();
         }
     }

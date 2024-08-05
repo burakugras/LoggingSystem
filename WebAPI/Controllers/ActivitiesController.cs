@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class ActivitiesController : Controller
+    public class ActivitiesController : ControllerBase
     {
         IActivityService _activityService;
 

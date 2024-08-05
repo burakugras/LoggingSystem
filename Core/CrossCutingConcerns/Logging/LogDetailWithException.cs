@@ -15,8 +15,8 @@ namespace Core.CrossCutingConcerns.Logging
             ExceptionMessage = string.Empty;
         }
 
-        public LogDetailWithException(string methodName, string username, string fullName, List<LogParameter> parameters, string exceptionMessage, string userId)
-            : base(methodName, username, fullName, parameters, userId)
+        public LogDetailWithException(string activityType, string username, string fullName, List<LogParameter> parameters, string exceptionMessage, string userId)
+            : base(activityType, username, fullName, parameters, userId)
         {
             ExceptionMessage = exceptionMessage;
         }

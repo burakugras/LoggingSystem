@@ -41,7 +41,7 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog
 
         private string GetLogDetail(HttpContext context)
         {
-            var methodName = context.Request.Path;
+            var activityType = context.Request.Path;
             var user = context.User;
             var username = "Unauthorized";
             var userId = "Unknown";
@@ -70,7 +70,7 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog
 
             var logDetail = new LogDetail()
             {
-                MethodName = methodName,
+                ActivityType = activityType,
                 Parameters = logParameters,
                 Username = username,
                 UserId = userId
@@ -78,7 +78,7 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog
 
             LogContext.PushProperty("Username", username);
             LogContext.PushProperty("UserId", userId);
-            LogContext.PushProperty("MethodName", methodName);
+            LogContext.PushProperty("ActivityType", activityType);
 
             var options = new JsonSerializerOptions
             {

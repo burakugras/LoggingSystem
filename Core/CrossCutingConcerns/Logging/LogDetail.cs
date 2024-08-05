@@ -8,7 +8,7 @@ namespace Core.CrossCutingConcerns.Logging
 {
     public class LogDetail
     {
-        public string MethodName { get; set; }
+        public string ActivityType { get; set; }
         public string Username { get; set; }
         public string FullName { get; set; }
         public List<LogParameter> Parameters { get; set; }
@@ -17,15 +17,15 @@ namespace Core.CrossCutingConcerns.Logging
         public LogDetail()
         {
             FullName = string.Empty;
-            MethodName = string.Empty;
+            ActivityType = string.Empty;
             Username = string.Empty;
             UserId = string.Empty;
             Parameters = new List<LogParameter>();
         }
 
-        public LogDetail(string methodName, string username, string fullName, List<LogParameter> parameters, string userId)
+        public LogDetail(string activityType, string username, string fullName, List<LogParameter> parameters, string userId)
         {
-            MethodName = methodName;
+            ActivityType = activityType;
             Username = username;
             FullName = fullName;
             Parameters = parameters;

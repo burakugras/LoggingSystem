@@ -14,10 +14,10 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog.CustomColumnEvents
         {
             if (logEvent.Properties is not null)
             {
-                var (methodName, value) = logEvent.Properties.FirstOrDefault(x => x.Key == "MethodName");
+                var (activityType, value) = logEvent.Properties.FirstOrDefault(x => x.Key == "ActivityType");
                 if (value is not null)
                 {
-                    var getValue = propertyFactory.CreateProperty(methodName, value);
+                    var getValue = propertyFactory.CreateProperty(activityType, value);
                     logEvent.AddPropertyIfAbsent(getValue);
                 }
             }

@@ -19,7 +19,7 @@ namespace Core.CrossCutingConcerns.Logging.SeriLog.CustomColumnOptions
                 {
                     new SqlColumn
                     {
-                        ColumnName="MethodName",
+                        ColumnName="ActivityType",
                         DataType=SqlDbType.NVarChar,
                         DataLength=4000,
                         AllowNull=true,
