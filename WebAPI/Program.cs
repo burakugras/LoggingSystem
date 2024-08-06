@@ -11,6 +11,8 @@ using Core.Extensions;
 using Core.CrossCutingConcerns.Exceptions.Extensions;
 using WebAPI.Utilities;
 using Autofac.Core;
+using Microsoft.EntityFrameworkCore;
+using DataAccess.Contexts; // LogDBContext için gerekli namespace
 
 namespace WebAPI;
 
@@ -20,13 +22,15 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
         builder.Services.AddControllersWithViews();
 
         builder.Services.AddControllers();
         builder.Services.AddBusinessServices();
         builder.Services.AddDataAccessServices(builder.Configuration);
         builder.Services.AddValidationAspect();
+
+        builder.Services.AddDbContext<LogDBContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
         var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -43,7 +47,6 @@ public class Program
                                 IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                             };
                         });
-
 
         builder.Services.AddSwaggerGen(opt =>
         {
@@ -80,7 +83,6 @@ public class Program
 
         var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

@@ -10,7 +10,6 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[ServiceFilter(typeof(LoggingFilter))]
     public class AuthController : ControllerBase
     {
         private IAuthService _authService;

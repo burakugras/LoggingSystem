@@ -19,6 +19,7 @@ namespace DataAccess.Contexts
         public DbSet<Activity> Activities { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         public LogDBContext(DbContextOptions dbContextOptions, IConfiguration configuration)
         {

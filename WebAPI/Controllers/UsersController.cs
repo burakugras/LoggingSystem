@@ -12,7 +12,6 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[ServiceFilter(typeof(LoggingFilter))]
     public class UsersController : ControllerBase
     {
         IUserService _userService;
